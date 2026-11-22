@@ -25,7 +25,7 @@ for (const f of ['.claude/skills/poteto-verify/SKILL.md', '.claude/skills/poteto
 }
 
 if (missing.length) {
-  console.error('✖ poteto 安装不完整，缺失:\n' + missing.map((f) => '  - ' + f).join('\n'))
+  console.error('✖ poteto 安装不完整，缺失:\\\n' + missing.map((f) => '  - ' + f).join('\\\n'))
   process.exit(1)
 }
 console.log('✅ poteto 工具箱完整: 2 skills + 2 docs')
@@ -35,7 +35,7 @@ const usage = () => {
   console.log(`hnzxb-poteto —— poteto 方法论工具箱
 
 用法:
-  hnzxb-poteto init            # 安装 skills 到 ./.claude/skills/，方法论文档到 ./docs/
+  hnzxb-poteto init            # 安装 skills 到 ./.claude/skills/，方法论文档到 ./docs/poteto/，自检脚本到 ./tests/poteto/
   hnzxb-poteto list            # 列出可用文档
   hnzxb-poteto read <路径>     # 打印文档内容（如 docs/poteto方法论.md）
   hnzxb-poteto skills          # 列出可安装的 skills`)
