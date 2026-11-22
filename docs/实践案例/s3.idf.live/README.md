@@ -49,7 +49,17 @@ P2 起改为**评审方出实施指令单 + 目标项目自己的 Agent 执行 +
 - `justfile`：check / lint / test / build / flash / verify-hardware / verify-live 七 recipes
 - `tests/unit/gates.test.mjs`：**vitest 自审**——lint 通过、justfile recipes 可发现、package.json 验证入口在、CI workflow 引用本包，四断言
 - 仓库根 `.github/workflows/check.yml`：push/PR 触发 lint + test（含 gates 自审）
+## 实跑证据
+
+- P0/P1 验收时（2026-11-22）：`just check` exit 0（15 tests passed）；`just verify-hardware` 真机 exit 0
+- P2–P4 未启动，无实跑——重启时由执行方按指令单回传
+
 - 证据：`just check` exit 0（15 tests passed）；`just verify-hardware` 真机 exit 0
+
+## 明确不建议项
+
+- P2–P4 存量未动前，不建议为 ws 重连另起并行方案（fixtures harness 层就是为此建的，先让它常驻）
+- 不建议把 live-mic-ok 移出「设计为红」层混进默认回归（真机依赖用例进 CI 会间歇性假红，磨掉信任）
 
 ## 目录布局标准化（2026-11-22，用户两次纠正驱动）
 
