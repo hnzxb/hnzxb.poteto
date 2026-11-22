@@ -1,0 +1,5 @@
+"工作点","说明","验收标准","状态","完工说明"
+"A1 标识符白名单校验","importJson 表名/列名拼 DDL 无校验（README 已知坑#3 复发）；加 ^[A-Za-z_][A-Za-z0-9_]*$ 白名单","恶意标识符用例返回明确错误","已完成（2026-11-22）","src/singleton.js 增 identifier()；tests/smoke.test.js 4 个恶意标识符用例全过（t; DROP TABLE x / t--x / a b / 恶意列名）。commit eb21ad0"
+"A2 类型保真导入","原实现全列 VARCHAR + String() 强转；改为按列类型推断（BOOLEAN/BIGINT/DOUBLE/VARCHAR，混型回落 VARCHAR）","typeof(a) 非 VARCHAR","已完成（2026-11-22）","columnType() 推断 + 原值参数化插入（对象 JSON 序列化）；测试断言导入 {a:1} 后 typeof(a)=BIGINT 通过。commit eb21ad0"
+"C1 Vitest 冒烟测试","用户纠正：测试框架用 Vitest 而非 bun test（对齐全局 rules/testing.md）；CLI 退出码 + HTTP 四端点 + 恶意标识符回归","bun run test 退出码 0","已完成（2026-11-22）","tests/smoke.test.js 10 用例（CLI 3 / HTTP 3 / 白名单 4）全过，HTTP 经 hono app.request 真实请求。commit eb21ad0"
+"C2 一键验证入口","scripts 收敛 lint/test/check + README 最短上手节","bun run check 退出码 0","已完成（2026-11-22）","check = lint && test；README 增『最短上手』节指向它。最终 bun run check：10 passed / lint 0 error，退出码 0。commit eb21ad0 + afa5037"

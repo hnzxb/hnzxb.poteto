@@ -1,0 +1,4 @@
+"工作点","说明","验收标准","状态","完工说明"
+"B1 git 版本基线","评审时非 git 仓库；并行会话于 23:25 完成首次提交（node 兼容化），评审会话随后补基线提交并修 .gitignore（*.duckdb 通配 + *.wal）","git log 有提交且 git status 干净","已完成（2026-11-22）","评审初判『.gitignore 忽略 src/docs』系误读 ls 输出，实际 gitignore 无此问题（教训：证据须来自文件本体而非拼接输出）。commit 54a65f9 + afa5037"
+"B2 最小 ESLint","eslint.config.js（@eslint/js recommended）+ lint script；首跑揪出 3 个未用导入并清除","bun run lint 退出码 0","已完成（2026-11-22）","修掉 cli.js/server.js/singleton.js 共 3 处 no-unused-vars。commit eb21ad0，bun run lint 退出码 0"
+"D1 README 勘误","pnpm→bun 表述、hnzzb-duckdb 拼写、server.js 直接启动端口实参","文档与实际行为一致","已完成（2026-11-22）","server.js:42 argv[3]→argv[2]（评审期实跑证据：传 9599 实际监听 9521）；cli.js:10 拼写修正；README 运行时行改 bun+node≥20。commit eb21ad0"

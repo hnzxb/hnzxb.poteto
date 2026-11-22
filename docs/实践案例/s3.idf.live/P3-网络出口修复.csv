@@ -1,0 +1,4 @@
+"工作点","说明","验收标准","状态","完工说明"
+"SOCKS5 CONNECT 隧道","volc_link 在 TCP 建连阶段经 clash 的 SOCKS5 CONNECT 到火山 443，TLS 端到端到火山（密钥不过代理）；proxy 地址走 sdkconfig/AT 配置化，默认关闭直连不受影响","直连被掐环境下真机全链路（上行语音→字幕→下行音频）跑通，证据为 verify-harness exit 0","未开始",""
+"代理配置入口","AT+VOLC 增加 PROXY,<host:port> 子命令 + NVS 持久化，与既有 KEY 子命令同风格","AT 设置后重启生效；AT 查询回显掩码地址；未配置时行为与现状完全一致","未开始",""
+"孪生同步","tests/unit/volc-client.mjs 孪生侧支持同款 SOCKS5 参数，真机/孪生同一路径验证","孪生经 clash 全链路绿（vitest）后真机再上，一次通过或差异可定位","未开始",""

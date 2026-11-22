@@ -1,0 +1,15 @@
+{
+  "name": "hnzxb.poteto",
+  "version": "0.1.0",
+  "description": "poteto 方法论工具箱 —— skills 安装 + 文档阅读",
+  "type": "module",
+  "bin": {
+    "hnzxb-poteto": "./bin/poteto.js"
+  },
+  "engines": { "node": ">=20" },
+  "files": [
+    "bin",
+    "skills",
+    "docs"
+  ]
+}

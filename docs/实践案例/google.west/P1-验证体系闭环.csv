@@ -1,0 +1,5 @@
+"工作点","说明","验收标准","状态","完工说明"
+"状态机单元测试","three-talk-machine.ts 自述纯逻辑 + CastIO 注入，是天然可测核心：vitest 用 mock CastIO 验证流水线预取（TURN_TEXT 后立刻 fetch 下一句）、观众插话 dropNext（迟到 NEXT_READY 被丢弃）、重叠放行（剩 ~1.2s 提前 resolve）、end 收尾规则（前 6 句不收）","bunx vitest run 退出码 0，覆盖上述 4 条不变量的用例全绿","待实施",""
+"排障备忘转红绿用例","docs/项目逻辑说明.md §五排障表是珍贵协议契约（二进制帧须 toString 转文本帧、X-Api-Resource-Id 与音色代次映射、StartConnection 不带 sessionId），目前只活在 prose；把『音色→resource-id 映射』『事件帧构造』提为纯函数后用用例锁住","新增映射/帧构造测试进入默认测试入口且全绿","待实施",""
+"端到端冒烟","探活命令已沉淀在 prose（curl --noproxy '*' http://localhost:27945/3talk）；将其收敛为 package.json script（如 probe）或 CI 步骤，断言 HTTP 200 与页面标题","探活脚本退出码 0/1 可判；curl 输出含 title=西游记版锵锵三人行","待实施",""
+"测试布局归位","测试统一住 tests/（如 tests/three-talk-machine.test.ts），默认入口 vitest run 只含回归层；public/test-voice.html 属人工排障工具，保留但在 docs 标注其定位（非自动化测试）","tests/ 目录存在且 vitest 默认发现；public/test-voice.html 定位说明落 docs","待实施",""

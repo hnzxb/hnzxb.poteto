@@ -1,0 +1,4 @@
+"工作点","说明","验收标准","状态","完工说明"
+"A1 classify 住宅/机房分类不变量","src/quality.js classify() 是 best 选点决策核心但纯词表无回归；tests/unit/quality.test.js：住宅 ASN（含 AS 前缀/org 内嵌）、双词表命中、空值 unknown、kind 枚举 + label 非空、大小写不敏感","npm run test 退出码 0，五组断言绿","已完成（2026-11-23）","tests/unit/quality.test.js 5 用例绿（16 tests 总计）。commit 6f1849e"
+"A2 规则组合回归","src/build.js 抽取 mergeSubscriptions(docs) 纯函数（零行为变更机械搬移，使规则组装脱离网络可测）；tests/unit/build.test.js 最小 fixture：假节点过滤、跨订阅去重幂等、AI 域前置不可遮蔽、provider 代理规则重写 HK 池、MATCH 剥除 + MATCH,DIRECT 收尾、组员过滤 + url-test 盖章、OCI 钉 ISP 节点、parseEnv 引号剥除","npm run test 退出码 0；fixture 驱动不依赖真实订阅","已完成（2026-11-23）","tests/unit/build.test.js 9 用例绿；重构后 npm run build exit 0、dist --help/doctor 实跑 exit 0（体检通过，AI 端点延迟 ✔）。commit 6f1849e"
+"D1 开发记录勘误","docs/开发过程/开发过程记录.md 项目路径写 ~/Codes/Githubs/hnzxb（实际 /Users/benz/hnzxb）且版本号停留在 v2026.11.8","文档与实际路径一致","待实施",""
