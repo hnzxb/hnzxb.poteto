@@ -15,6 +15,22 @@ const listDocs = (dir = docsDir, base = '') =>
     return e.isDirectory() ? listDocs(path.join(dir, e.name), rel) : [rel]
   })
 
+const SELF_CHECK = `#!/usr/bin/env node
+import fs from 'node:fs'
+
+const missing = []
+for (const f of ['.claude/skills/poteto-verify/SKILL.md', '.claude/skills/poteto-correct/SKILL.md',
+  'docs/poteto/poteto方法论.md', 'docs/poteto/融合映射.md']) {
+  if (!fs.existsSync(f)) missing.push(f)
+}
+
+if (missing.length) {
+  console.error('✖ poteto 安装不完整，缺失:\n' + missing.map((f) => '  - ' + f).join('\n'))
+  process.exit(1)
+}
+console.log('✅ poteto 工具箱完整: 2 skills + 2 docs')
+`
+
 const usage = () => {
   console.log(`hnzxb-poteto —— poteto 方法论工具箱
 
@@ -36,12 +52,14 @@ try {
       fs.cpSync(path.join(skillsDir, s), path.join(cwd, '.claude/skills', s), { recursive: true })
       console.log(`✅ skill 已安装: .claude/skills/${s}`)
     }
-    fs.mkdirSync(path.join(cwd, 'docs'), { recursive: true })
+    fs.mkdirSync(path.join(cwd, 'docs/poteto'), { recursive: true })
     for (const d of ['poteto方法论.md', '融合映射.md']) {
-      fs.copyFileSync(path.join(docsDir, d), path.join(cwd, 'docs', d))
-      console.log(`✅ 文档已安装: docs/${d}`)
+      fs.copyFileSync(path.join(docsDir, d), path.join(cwd, 'docs/poteto', d))
+      console.log(`✅ 文档已安装: docs/poteto/${d}`)
     }
-    console.log('\n在 Claude Code 中输入 /poteto-verify 或 /poteto-correct 即可使用。')
+    fs.mkdirSync(path.join(cwd, 'tests/poteto'), { recursive: true })
+    fs.writeFileSync(path.join(cwd, 'tests/poteto/check.js'), SELF_CHECK)
+    console.log('✅ 自检脚本已安装: tests/poteto/check.js')
   } else if (cmd === 'list') {
     for (const d of listDocs()) console.log(d)
   } else if (cmd === 'read') {
