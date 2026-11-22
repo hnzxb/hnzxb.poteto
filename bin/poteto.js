@@ -131,7 +131,9 @@ try {
     if (!report) throw new Error('DeepSeek 返回为空')
     const out = path.join(cwd, 'docs/poteto/评审报告.md')
     fs.mkdirSync(path.dirname(out), { recursive: true })
-    fs.writeFileSync(out, `# poteto 评审报告（${new Date().toISOString().slice(0, 10)}，DeepSeek agent 生成）\n\n${report}\n`)
+    const now = new Date()
+    const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+    fs.writeFileSync(out, `# poteto 评审报告（${date}，DeepSeek agent 生成）\n\n${report}\n`)
     console.log(report)
     console.log(`\n✅ 报告已写入: ${out}`)
   } else {
