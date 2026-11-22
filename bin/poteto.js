@@ -105,15 +105,26 @@ try {
         lint配置: entries.some((e) => /^eslint\.config\.|biome\.json|\.eslintrc/.test(e.name)),
         规范文件: entries.some((e) => /^(CLAUDE|AGENTS)\.md$/.test(e.name)),
         tests目录: entries.some((e) => e.isDirectory() && /^tests?|__tests__$/.test(e.name)),
+        env被忽略: (() => {
+          const gi = path.join(cwd, '.gitignore')
+          return fs.existsSync(gi) && /^\.env$/m.test(fs.readFileSync(gi, 'utf8'))
+        })(),
+        poteto工具箱: fs.existsSync(path.join(cwd, 'docs/poteto/纠错台账.md')),
+      }
+      const sub = (dir) => {
+        const p = path.join(cwd, dir)
+        return fs.existsSync(p) ? fs.readdirSync(p, { withFileTypes: true }).map((e) => (e.isDirectory() ? `${e.name}/` : e.name)).join(' ') : '无此目录'
       }
       let scripts = '无 package.json'
       const pkg = path.join(cwd, 'package.json')
       if (fs.existsSync(pkg)) scripts = JSON.stringify(JSON.parse(fs.readFileSync(pkg, 'utf8')).scripts ?? {})
-      return `## 顶层目录\n${tree}\n## 环境探针\n${JSON.stringify(probes, null, 2)}\n## package.json scripts\n${scripts}`
+      const readme = path.join(cwd, 'README.md')
+      const readmeHead = fs.existsSync(readme) ? fs.readFileSync(readme, 'utf8').split('\n').slice(0, 15).join('\n') : '无 README'
+      return `## 顶层目录\n${tree}\n## 环境探针\n${JSON.stringify(probes, null, 2)}\n## src 结构\n${sub('src')}\n## tests 结构\n${sub('tests')}\n## package.json scripts\n${scripts}\n## README 前 15 行\n${readmeHead}`
     }
 
     const methodology = fs.readFileSync(path.join(docsDir, 'poteto方法论.md'), 'utf8')
-    const system = `${methodology}\n\n你是 poteto 旁路评审专家。基于上述信任倒金字塔方法论，对用户给出的项目事实做评审。\n输出结构（五件套，缺一不可）：\n1. 总评：信任阶梯搭到第几层，最大短板\n2. 分层覆盖度表：五层逐行，判定 ✅⚠️❌ + 证据（引用事实）\n3. 系统性缺口清单：按"能在哪一层强制"上移排序（架构→lint/CI→测试→prose），拒绝下移建议\n4. 可执行改进项：最小变更，注明验证方式\n5. 明确不建议项：不值得做的，说明理由\n只依据给出的事实判断，不臆测未给出的信息。`
+    const system = `${methodology}\n\n你是 poteto 旁路评审专家。基于上述信任倒金字塔方法论，对用户给出的项目事实做评审。\n输出结构（五件套，缺一不可）：\n1. 总评：信任阶梯搭到第几层，最大短板\n2. 分层覆盖度表：五层逐行，判定 ✅⚠️❌ + 证据（引用事实）\n3. 系统性缺口清单：按"能在哪一层强制"上移排序（架构→lint/CI→测试→prose），拒绝下移建议\n4. 可执行改进项：最小变更，注明验证方式\n5. 明确不建议项：不值得做的，说明理由\n判定规则：只依据给出的事实判断，不臆测未给出的信息；分层判定表中每个判定标注 [事实] 或 [推断]；事实不足的层如实写"无法判定"并指出需要补充采集什么；若环境探针显示 poteto 工具箱未部署，把部署列为改进项第一条。\n报告落款前附一节「事实采集边界」：列出本次判定所依赖的事实清单与明显未覆盖的范围。`
     const res = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: `Bearer ${apiKey}` },
