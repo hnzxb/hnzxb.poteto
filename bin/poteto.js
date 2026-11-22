@@ -90,7 +90,7 @@ try {
     console.log('✅ poteto 工具箱完整: 2 skills + 4 docs + 自检脚本')
   } else if (cmd === 'agent') {
     const key = fs.existsSync(path.join(cwd, '.env'))
-      ? (fs.readFileSync(path.join(cwd, '.env'), 'utf8').match(/^DEEPSEEK_API_KEY=(.+)$/m)?.[1] ?? '').trim()
+      ? (fs.readFileSync(path.join(cwd, '.env'), 'utf8').match(/^DEEPSEEK_API_KEY=["']?(.+?)["']?\s*$/m)?.[1] ?? '')
       : ''
     const apiKey = key || process.env.DEEPSEEK_API_KEY
     if (!apiKey) throw new Error('未找到 DEEPSEEK_API_KEY（目标目录 .env 或环境变量）')
