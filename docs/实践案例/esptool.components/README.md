@@ -11,6 +11,18 @@
 5. **npm 范式两轮演进**（用户两次推进）：①用户提议 npm/npx → 落地 manifest + CLI（list/check）；②用户质疑"为什么不能 per-component package.json" → 修正为 lockfile 模式（idf_component.yml 版本真源，package.json 派生，CI 校验）。教训：**主从选择标准=谁被更硬的机器环节消费谁当真源**（IDF 构建读 yml）；初版"禁止 package.json"说得太绝对，真实风险只是"两处声明版本"。
 6. **测试补齐（被用户质问触发）**：CLI 零测试宣称完成 → vitest 4 用例（含 check 正反向：造假组件+假工程检出残留拷贝）；连带修复 node_modules 误入库（无 .gitignore）。
 
+## 实跑证据（2026-11-23 复核）
+
+- `bun x vitest run`（esptool.components 内）→ Test Files 1 passed / Tests 4 passed
+- `node bin/comp.js list` → 三层骨架输出，`exit=0`
+- `bun run test:self`（poteto 仓库）→ 全部通过（每案例 commit 前均过）
+
+## 明确不建议项
+
+- **不建议现在实现 `add`/`sync` 子命令**：无真实收编组件可验，属提前固化分发形态（等 at_console 收编后一起做）
+- **不建议引入 submodule 消费方式**：EXTRA_COMPONENT_DIRS 尚未被任何工程验证，先跑通再议
+- **不建议给 C 组件库配 eslint/CI**：无 TS/JS 源码可 lint；CI 待首个消费工程接入时随其仓库建
+
 ## 教训（入台账候选）
 
 - **手工演示 ≠ 测试覆盖**：两次手工跑就写"实测通过"，与 mac.awake check.js 事故同类——宣称完成的标准又放低了。收工自查清单应加一条"有逻辑的代码必须有可复跑测试"。
