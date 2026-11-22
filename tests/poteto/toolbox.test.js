@@ -64,6 +64,13 @@ try {
     execFileSync('node', [bin, 'init'], { cwd: tmp, stdio: 'ignore' })
     execFileSync('node', [bin, 'check'], { cwd: tmp, stdio: 'ignore' })
   })
+  ok('agent 无 DEEPSEEK_API_KEY 时报错退出', () => {
+    let code = 0
+    try {
+      execFileSync('node', [bin, 'agent'], { cwd: tmp, stdio: 'ignore', env: { ...process.env, DEEPSEEK_API_KEY: '' } })
+    } catch (err) { code = err.status }
+    assert(code === 1, `期望 exit 1，实际 ${code}`)
+  })
 } finally { rmSync(tmp, { recursive: true, force: true }) }
 
 if (failed) { console.error(`\n${failed} 项失败`); process.exit(1) }
