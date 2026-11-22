@@ -105,9 +105,11 @@ try {
         lint配置: entries.some((e) => /^eslint\.config\.|biome\.json|\.eslintrc/.test(e.name)),
         规范文件: entries.some((e) => /^(CLAUDE|AGENTS)\.md$/.test(e.name)),
         tests目录: entries.some((e) => e.isDirectory() && /^tests?|__tests__$/.test(e.name)),
+        env文件存在: fs.existsSync(path.join(cwd, '.env')),
         env被忽略: (() => {
+          if (!fs.existsSync(path.join(cwd, '.env'))) return '不适用（无 .env）'
           const gi = path.join(cwd, '.gitignore')
-          return fs.existsSync(gi) && /^\.env$/m.test(fs.readFileSync(gi, 'utf8'))
+          return fs.existsSync(gi) && /^\.env/m.test(fs.readFileSync(gi, 'utf8'))
         })(),
         poteto工具箱: fs.existsSync(path.join(cwd, 'docs/poteto/纠错台账.md')),
       }
@@ -124,7 +126,7 @@ try {
     }
 
     const methodology = fs.readFileSync(path.join(docsDir, 'poteto方法论.md'), 'utf8')
-    const system = `${methodology}\n\n你是 poteto 旁路评审专家。基于上述信任倒金字塔方法论，对用户给出的项目事实做评审。\n输出结构（五件套，缺一不可）：\n1. 总评：信任阶梯搭到第几层，最大短板\n2. 分层覆盖度表：五层逐行，判定 ✅⚠️❌ + 证据（引用事实）\n3. 系统性缺口清单：按"能在哪一层强制"上移排序（架构→lint/CI→测试→prose），拒绝下移建议\n4. 可执行改进项：最小变更，注明验证方式\n5. 明确不建议项：不值得做的，说明理由\n判定规则：只依据给出的事实判断，不臆测未给出的信息；分层判定表中每个判定标注 [事实] 或 [推断]；事实不足的层如实写"无法判定"并指出需要补充采集什么；若环境探针显示 poteto 工具箱未部署，把部署（命令：npx -y github:hnzxb/hnzxb.poteto init）列为改进项第一条；但若目标仓库本身就是 hnzxb.poteto 工具箱源仓库（顶层有 bin/poteto.js），跳过部署建议——工具箱不部署进自己。\n报告落款前附一节「事实采集边界」：列出本次判定所依赖的事实清单与明显未覆盖的范围。`
+    const system = `${methodology}\n\n你是 poteto 旁路评审专家。基于上述信任倒金字塔方法论，对用户给出的项目事实做评审。\n输出结构（五件套，缺一不可）：\n1. 总评：信任阶梯搭到第几层，最大短板\n2. 分层覆盖度表：五层逐行，判定 ✅⚠️❌ + 证据（引用事实）\n3. 系统性缺口清单：按"能在哪一层强制"上移排序（架构→lint/CI→测试→prose），拒绝下移建议\n4. 可执行改进项：最小变更，注明验证方式\n5. 明确不建议项：不值得做的，说明理由\n判定规则：只依据给出的事实判断，不臆测未给出的信息；分层判定表中每个判定标注 [事实] 或 [推断]；事实不足的层如实写"无法判定"并指出需要补充采集什么；判定第 3 层（验证体系）前必须先检查 scripts 里是否有 doctor/verify/test/check 类入口以及顶层是否有 checks/ 目录，有则它们就是验证体系的一部分，不得凭 tests 目录缺失直接判空；env被忽略为"不适用（无 .env）"时禁止提及 .env 风险；若环境探针显示 poteto 工具箱未部署，把部署（命令：npx -y github:hnzxb/hnzxb.poteto init）列为改进项第一条；但若目标仓库本身就是 hnzxb.poteto 工具箱源仓库（顶层有 bin/poteto.js），跳过部署建议——工具箱不部署进自己。\n报告落款前附一节「事实采集边界」：列出本次判定所依赖的事实清单与明显未覆盖的范围。`
     const res = await fetch('https://api.deepseek.com/chat/completions', {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: `Bearer ${apiKey}` },
