@@ -48,6 +48,15 @@ try {
     assert(read.length > 100, 'read 输出为空')
     assert(execFileSync('node', [bin, 'skills'], { encoding: 'utf8' }).includes('poteto-verify'), 'skills 未列出')
   })
+  ok('案例五件套结构完整（对己标准脚本化）', () => {
+    const cases = join(import.meta.dirname, '../../docs/实践案例')
+    for (const d of fs.readdirSync(cases, { withFileTypes: true })) {
+      if (!d.isDirectory()) continue
+      const md = fs.readFileSync(join(cases, d.name, 'README.md'), 'utf8')
+      assert(md.includes('实跑证据') || md.includes('搁置'), `${d.name}: 缺实跑证据节或搁置披露`)
+      assert(md.includes('不建议'), `${d.name}: 缺明确不建议项`)
+    }
+  })
 } finally { rmSync(tmp, { recursive: true, force: true }) }
 
 if (failed) { console.error(`\n${failed} 项失败`); process.exit(1) }
