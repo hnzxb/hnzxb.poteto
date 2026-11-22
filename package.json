@@ -17,7 +17,8 @@
   ],
   "scripts": {
     "check": "eslint .",
-    "test:self": "node tests/poteto/toolbox.test.js"
+    "test:self": "node tests/poteto/toolbox.test.js",
+    "gate": "bun run check && bun run test:self"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
