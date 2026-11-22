@@ -72,3 +72,4 @@
 - **红→绿留痕的执行范式**（duckdb 教训的落地版）：合规自测先写先跑，把首跑失败输出原样记入案例 CSV 完工说明（如「3 failed：eslint 无配置 / check script 缺失 / CI 无 step」），再转绿——红旗是证据不是仪式
 - **测试内调工具用 `node_modules/.bin/<bin>` 直呼**，`npx` 在 execFileSync 里会 "could not determine executable to run"
 - **正例对照**：评审遇到好范式要显式入库当对照——「开发过程记录」（故障原文+卡住原因+解法取舍）与 doctor 模式（产品自带体检命令）是 Prose/验证层的范本，作为分层判定时的正面参照系
+- **元层自省（2026-11-23）**：知识库自身的 README 会随实践漂移——每完成一个案例必须回看 README 与仓库实况是否一致；搁置/烂尾案例必须显式披露（google.west 教训），不许只汇报漂亮的那几个

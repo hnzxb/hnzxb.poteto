@@ -19,12 +19,18 @@ try {
   ok('init 安装 skills 与文档', () => {
     execFileSync('node', [bin, 'init'], { cwd: tmp })
     for (const f of ['.claude/skills/poteto-verify/SKILL.md', '.claude/skills/poteto-correct/SKILL.md',
-      'docs/poteto/poteto方法论.md', 'docs/poteto/融合映射.md', 'tests/poteto/check.js'])
+      'docs/poteto/poteto方法论.md', 'docs/poteto/融合映射.md', 'docs/poteto/功能地图.md', 'docs/poteto/纠错台账.md', 'tests/poteto/check.js'])
       assert(fs.existsSync(join(tmp, f)), `缺失 ${f}`)
   })
   ok('生成脚本能被 node 解析并通过', () => {
     const out = execFileSync('node', ['tests/poteto/check.js'], { cwd: tmp, encoding: 'utf8' })
     assert(out.includes('完整'), `输出异常: ${out}`)
+  })
+  ok('重复 init 不覆盖已填写的模板', () => {
+    const map = join(tmp, 'docs/poteto/功能地图.md')
+    fs.writeFileSync(map, '已填写内容')
+    execFileSync('node', [bin, 'init'], { cwd: tmp, stdio: 'ignore' })
+    assert(fs.readFileSync(map, 'utf8') === '已填写内容', '模板被覆盖')
   })
   ok('缺失文件时自检失败 (exit 1)', () => {
     fs.rmSync(join(tmp, 'docs/poteto/融合映射.md'))

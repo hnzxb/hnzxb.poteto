@@ -20,7 +20,7 @@ import fs from 'node:fs'
 
 const missing = []
 for (const f of ['.claude/skills/poteto-verify/SKILL.md', '.claude/skills/poteto-correct/SKILL.md',
-  'docs/poteto/poteto方法论.md', 'docs/poteto/融合映射.md']) {
+  'docs/poteto/poteto方法论.md', 'docs/poteto/融合映射.md', 'docs/poteto/功能地图.md', 'docs/poteto/纠错台账.md']) {
   if (!fs.existsSync(f)) missing.push(f)
 }
 
@@ -28,7 +28,7 @@ if (missing.length) {
   console.error('✖ poteto 安装不完整，缺失:\\\n' + missing.map((f) => '  - ' + f).join('\\\n'))
   process.exit(1)
 }
-console.log('✅ poteto 工具箱完整: 2 skills + 2 docs')
+console.log('✅ poteto 工具箱完整: 2 skills + 4 docs')
 `
 
 const usage = () => {
@@ -57,6 +57,14 @@ try {
       fs.copyFileSync(path.join(docsDir, d), path.join(cwd, 'docs/poteto', d))
       console.log(`✅ 文档已安装: docs/poteto/${d}`)
     }
+    const scaffold = (file, title) => {
+      const target = path.join(cwd, 'docs/poteto', file)
+      if (fs.existsSync(target)) return
+      fs.writeFileSync(target, `# ${title}\n\n> 由 hnzxb-poteto 生成，按 skills/poteto-verify 填写。\n\n| 功能 | 到达路径 | 验证命令 | 证据形态 |\n|---|---|---|---|\n`)
+      console.log(`✅ 模板已生成: docs/poteto/${file}`)
+    }
+    scaffold('功能地图.md', '功能地图')
+    scaffold('纠错台账.md', '纠错台账')
     fs.mkdirSync(path.join(cwd, 'tests/poteto'), { recursive: true })
     fs.writeFileSync(path.join(cwd, 'tests/poteto/check.js'), SELF_CHECK)
     console.log('✅ 自检脚本已安装: tests/poteto/check.js')
