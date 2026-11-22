@@ -1,0 +1,5 @@
+| 工作点 | 说明 | 验收标准 | 状态 | 完工说明 |
+|---|---|---|---|---|
+| B1 eslint 门禁 | eslint.config.js + lint script（JS 仓库零 lint 是第 2 层实缺） | bun run lint 首跑红（记违规数）后绿 exit 0 | ⬜ 未开始 | |
+| D1 .gitignore 补 .env* | 现无 .env，纯卫生预防 | git check-ignore .env 命中 | ⬜ 未开始 | |
+| W1 checks 自测留观 | 体检脚本自身的验证缺位，暂不建 mock 测试；待某次 check 误报/漏报真实发生再按"错误即规则"补 | 观察项，无验收 | 🔭 留观 | |
