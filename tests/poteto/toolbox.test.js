@@ -16,6 +16,9 @@ const assert = (cond, msg) => { if (!cond) throw new Error(msg) }
 const tmp = mkdtempSync(join(tmpdir(), 'poteto-self-'))
 
 try {
+  ok('bin/poteto.js 语法门禁', () => {
+    execFileSync('node', ['--check', bin])
+  })
   ok('init 安装 skills 与文档', () => {
     execFileSync('node', [bin, 'init'], { cwd: tmp })
     for (const f of ['.claude/skills/poteto-verify/SKILL.md', '.claude/skills/poteto-correct/SKILL.md',

@@ -30,9 +30,12 @@
 
 ```
 AGENTS.md               # 评审规程 + 实施纪律 + 实施期经验（专家的操作系统）
+bin/poteto.js           # 零依赖 CLI：init / list / read / skills
+  npx -y github:hnzxb/hnzxb.poteto init   # 一键把 skills+文档+自检注入目标项目
 docs/
   poteto方法论.md        # 方法论总览 + pstack 一手资料汇编
   融合映射.md            # 金字塔层级 ↔ 本机规范逐层对照
+  功能地图.md / 纠错台账.md  # 工具箱自身的验证依据与错误上移记录
   实践案例/              # ★ 每次评审的分层报告、分阶段计划与证据
     google.west/         #   P0 完成，P1 搁置（见案例 README）
     hnzxb.duckdb/        #   含下属会话复检记录与三条教训
@@ -41,6 +44,8 @@ docs/
 skills/
   poteto-verify/         # 验证技能（可移植，但实践中较少被直接复制）
   poteto-correct/        # 纠错上移技能
+tests/poteto/            # 工具箱自测（test:self，6 项，CI 门禁）
+.github/workflows/       # push/PR 跑语法门禁 + 自测（npx 分发链路的回归保障）
 ```
 
 实践中真正高频复用的是**案例的分阶段 CSV 模板**（工作点/说明/验收标准/状态/完工说明）与通用提示词（存于 macOS 备忘录「旁路实践专家-通用提示词」），而非 `skills/` 目录。
