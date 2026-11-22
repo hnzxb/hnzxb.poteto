@@ -1,6 +1,6 @@
 # hnzxb.poteto — Poteto 方法论旁路专家
 
-基于 Lauren Tan（@poteto）**信任倒金字塔**方法论构建的旁路专家（sidecar expert）知识库。给它任意一个项目，它会基于本仓库沉淀的方法论、技能与实践案例，对该项目进行专业评审，并按授权边界产出改进。
+基于 Lauren Tan（@poteto）**信任倒金字塔**方法论构建的旁路专家（sidecar expert）知识库 + 可安装工具箱。给它任意一个项目，它会基于本仓库沉淀的方法论、技能与实践案例，对该项目进行专业评审，并按授权边界产出改进。任意项目 `npx -y github:hnzxb/hnzxb.poteto check → init → agent` 即得工具箱部署与 DeepSeek 初筛报告，专家复核定稿。
 
 ## 核心理念
 
@@ -30,8 +30,10 @@
 
 ```
 AGENTS.md               # 评审规程 + 实施纪律 + 实施期经验（专家的操作系统）
-bin/poteto.js           # 零依赖 CLI：init / list / read / skills
-  npx -y github:hnzxb/hnzxb.poteto init   # 一键把 skills+文档+自检注入目标项目
+bin/poteto.js           # 零依赖 CLI：init / list / read / skills / check / agent
+  npx -y github:hnzxb/hnzxb.poteto check   # 检查目标项目工具箱完整性（先红后绿自证）
+  npx -y github:hnzxb/hnzxb.poteto init    # 一键把 skills+文档+自检注入目标项目
+  npx -y github:hnzxb/hnzxb.poteto agent   # DeepSeek 初筛评审（方法论全文作系统提示词）
 docs/
   poteto方法论.md        # 方法论总览 + pstack 一手资料汇编
   融合映射.md            # 金字塔层级 ↔ 本机规范逐层对照
@@ -40,7 +42,9 @@ docs/
     google.west/         #   P0 完成，P1 搁置（见案例 README）
     hnzxb.duckdb/        #   含下属会话复检记录与三条教训
     hnzxb.mihomo/        #   P0/P1 实施完成，证据齐全（commit 6f1849e）
-    s3.idf.live/         #   P0/P1 完成，P2/P3 指令单待产出
+    s3.idf.live/         #   P0/P1 完成，P2/P4 指令单待执行
+    esptool.components/  #   立项案例（教训最重）+ 指令单 01/02 待执行
+    hnzxb.macbook/       #   agent 初筛 + 专家复核，标准流程第 3 例
 skills/
   poteto-verify/         # 验证技能（可移植，但实践中较少被直接复制）
   poteto-correct/        # 纠错上移技能
@@ -67,6 +71,8 @@ tests/poteto/            # 工具箱自测（test:self，6 项，CI 门禁）
 - duckdb 案例：提示词初版三洞——首交付不完整靠用户轮询补齐、测试框架违反所有者 Vitetest 规范、把抱怨当授权直接开干（已补：规范对齐前置/授权判定从严/交付自查清单）
 - s3.idf.live 案例：专家越界直接改目标项目被用户纠正（已补：角色边界纪律 + 记忆）
 - mihomo 案例：`execFileSync('npx')` 不可用，须直呼 `node_modules/.bin`；红→绿留痕从此为固定动作
+- esptool.components 案例：初心滞后（第 3 个 commit 才补）、给 C 库装 npm/vitest 技术栈错配、宣布规则 5 分钟后自违反、案例 README 美化过程顺序（已补：初心先行/commit 时间线核查/治理工具同构/人工闸门——非 poteto 仓库见专家 commit 默认越界可要求回滚）
+- agent 提示词四轮回灌：自指误报（工具箱源仓库建议部署自己）、动作幻觉（建议装 pstack 插件）、env 探针歧义（无 .env 也报未忽略）、判第 3 层不看 doctor 入口——每份报告的真实错误都回灌成采集器/提示词的确定性规则
 
 ## 参考
 
