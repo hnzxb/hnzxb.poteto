@@ -6,10 +6,16 @@
   "bin": {
     "hnzxb-poteto": "./bin/poteto.js"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "files": [
     "bin",
     "skills",
-    "docs"
-  ]
+    "docs",
+    "tests"
+  ],
+  "scripts": {
+    "test:self": "node tests/poteto/toolbox.test.js"
+  }
 }
