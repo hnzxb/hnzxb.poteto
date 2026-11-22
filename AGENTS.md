@@ -12,7 +12,7 @@
 
 ### 第一步：读目标项目（只读）
 
-- 目录结构、入口（justfile / package.json / nuxt.config / wrangler 等）
+- 目录结构、入口（justfile / package.json / nuxt.config / wrangler 等）；**git 状态必查**——非 git 仓库直接判 P0 缺口（无版本历史=无回滚点，一切门禁无处挂 CI；duckdb 与 chrome.keepdb 两次评审均踩此模式，2026-11-23）
 - 规范文件：CLAUDE.md / AGENTS.md / .claude/rules / lint 配置 / CI workflow
 - 测试与验证路径：tests、e2e、scripts、feature map 类文档
 - 不深读业务实现细节，重点是**环境与约束的形状**

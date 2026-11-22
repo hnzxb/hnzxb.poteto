@@ -1,0 +1,4 @@
+"工作点","说明","验收标准","状态","完工说明"
+"C1 settings/deepseek 单测","lib 两文件零测试","bun run test 用例数增加且退出码 0","已完成 2026-11-23","tests/{settings,deepseek}.test.js；verify 全绿 3 文件 7 tests"
+"C2 UAT online 路径","评审初判 UAT 仅 offline","UAT online 模式 exit 0","撤销（评审误判）","uat.mjs:58 已有 UAT_LIVE=1 完整实现（key 注入/SW 等待/失败引导），无需新增"
+"A1 uat.mjs Chrome 路径可配置","硬编码本机绝对路径","env 指定时仍 UAT exit 0","已完成 2026-11-23","UAT_CHROME env 覆盖 + 缺失时 Agent Fix Guide 报错（实测 /nonexistent 退出码 1）"
