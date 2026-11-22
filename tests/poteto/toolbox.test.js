@@ -57,6 +57,13 @@ try {
       assert(md.includes('不建议'), `${d.name}: 缺明确不建议项`)
     }
   })
+  ok('check 子命令红绿两向（init 前红、init 后绿）', () => {
+    let code = 0
+    try { execFileSync('node', [bin, 'check'], { cwd: tmp, stdio: 'ignore' }) } catch (err) { code = err.status }
+    assert(code === 1, `缺失态期望 exit 1，实际 ${code}`)
+    execFileSync('node', [bin, 'init'], { cwd: tmp, stdio: 'ignore' })
+    execFileSync('node', [bin, 'check'], { cwd: tmp, stdio: 'ignore' })
+  })
 } finally { rmSync(tmp, { recursive: true, force: true }) }
 
 if (failed) { console.error(`\n${failed} 项失败`); process.exit(1) }

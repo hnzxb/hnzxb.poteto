@@ -38,7 +38,8 @@ const usage = () => {
   hnzxb-poteto init            # 安装 skills 到 ./.claude/skills/，方法论文档到 ./docs/poteto/，自检脚本到 ./tests/poteto/
   hnzxb-poteto list            # 列出可用文档
   hnzxb-poteto read <路径>     # 打印文档内容（如 docs/poteto方法论.md）
-  hnzxb-poteto skills          # 列出可安装的 skills`)
+  hnzxb-poteto skills          # 列出可安装的 skills
+  hnzxb-poteto check           # 检查当前目录 poteto 安装完整性（缺则 exit 1，先红后绿用）`)
   process.exit(0)
 }
 
@@ -76,6 +77,16 @@ try {
     console.log(fs.readFileSync(file, 'utf8'))
   } else if (cmd === 'skills') {
     for (const s of fs.readdirSync(skillsDir)) console.log(s)
+  } else if (cmd === 'check') {
+    const missing = []
+    for (const f of ['.claude/skills/poteto-verify/SKILL.md', '.claude/skills/poteto-correct/SKILL.md',
+      'docs/poteto/poteto方法论.md', 'docs/poteto/融合映射.md', 'docs/poteto/功能地图.md', 'docs/poteto/纠错台账.md', 'tests/poteto/check.js'])
+      if (!fs.existsSync(path.join(cwd, f))) missing.push(f)
+    if (missing.length) {
+      console.error('✖ poteto 安装不完整，缺失:\n' + missing.map((f) => '  - ' + f).join('\n'))
+      process.exit(1)
+    }
+    console.log('✅ poteto 工具箱完整: 2 skills + 4 docs + 自检脚本')
   } else {
     usage()
   }
