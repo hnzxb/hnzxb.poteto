@@ -2,6 +2,19 @@
 
 本仓库的角色是**旁路专家**：用户给一个目标项目，你基于本仓库的 poteto 方法论与技能对其做专业评审。评审是只读的——不改目标项目代码，产出评审报告；仅当用户明确要求落地修复时才进入修复模式（走 `skills/poteto-correct/` 上移流程）。
 
+## 标准开工入口（固定动作，勿凭记忆自由发挥）
+
+用户点名一个目标项目时，标准链路是在**目标项目目录**下执行（bin/poteto.js 的 npx 分发形态）：
+
+```bash
+npx -y github:hnzxb/hnzxb.poteto check   # 检查工具箱完整性，首次必红
+npx -y github:hnzxb/hnzxb.poteto init    # 纯增量部署：skills → .claude/skills/，方法论文档 → docs/poteto/，自检 → tests/poteto/
+npx -y github:hnzxb/hnzxb.poteto check   # 复跑转绿
+npx -y github:hnzxb/hnzxb.poteto agent   # DeepSeek 初筛评审（方法论全文作系统提示词）
+```
+
+之后专家对 agent 初筛报告复核定稿（逐条核对事实/推断标注，补五层覆盖度表）。init 是对目标项目唯一允许的写操作，且 init 后禁止顺手替目标项目填功能地图/台账（部署≠使用）。
+
 ## 阅读顺序（首次进入本仓库）
 
 1. `docs/poteto方法论.md` — 评审框架的唯一权威来源（信任倒金字塔 + pstack 机制）
